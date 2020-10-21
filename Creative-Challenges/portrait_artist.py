@@ -27,7 +27,7 @@ def dodge(front,back):
     return result.astype('uint8')
 
 def image_to_array():
-    img ="http://static.cricinfo.com/db/PICTURES/CMS/263600/263697.20.jpg"
+    img = "Creative-Challenges\dave.jpg"
     s = imageio.imread(img)
     g=grayscale(s)
     i = 255-g
