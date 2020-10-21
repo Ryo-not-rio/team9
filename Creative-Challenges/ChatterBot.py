@@ -20,7 +20,7 @@ def InterpretFileContents(FileName):
             else:
                 ExitPhrases.extend(Line.split(";"))
     
-    return OutputDict
+    return OutputDict, ExitPhrases
 
 def AppendToFile(FileName, InputString, OutputLst):
     with open(FileName, "a") as ResponseFile:
@@ -33,21 +33,30 @@ def AppendToFile(FileName, InputString, OutputLst):
                 TextToWrite += "\n"
         ResponseFile.write(TextToWrite)
 
+def Treat(String):
+    NewString = String.lower().replace("?", "").replace("!", "").replace(",", "").replace(".", "").replace("(", "").replace(")", "")
+    return NewString
+
 if __name__ == "__main__":
-    ResponseDict, GoodbyePhrases = InterpretFileContents("Creative-Challenges/Responses.txt")
+    FileName = "Creative-Challenges/Responses.txt"
+    ResponseDict, GoodbyePhrases = InterpretFileContents(FileName)
     ConvEnded = False
     while ConvEnded == False:
-        UserInput = input("> ").lower()
-        UserInput = UserInput.replace("?", "").replace("!", "").replace(",", "").replace(".", "").replace("(", "").replace(")", "")
+        UserInput = input("> ")
+        UserInput = Treat(UserInput)
         if UserInput in GoodbyePhrases:
             ConvEnded = True
             print("Goodbye")
         else:
-            try:
-                PossibleResponses = ResponseDict[UserInput]
-                Output = PossibleResponses[randint(0, len(PossibleResponses) - 1)]
-                print(Output)
-            except KeyError:
+            Found = True
+            for PossInput in ResponseDict.keys():
+                if UserInput == PossInput:
+                    Output = ResponseDict[PossInput][randint(0, len(ResponseDict) - 1)]
+                    print(Output)
+                elif PossInput in UserInput:
+                    Output = ResponseDict[PossInput][randint(0, len(ResponseDict) - 1)]
+                    print(Output)
+            if Found == False:
                 ## No response found
                 NewResponseList = []
                 MoreResponses = False
@@ -58,5 +67,6 @@ if __name__ == "__main__":
                     if input("Are there more responses to that phrase?\n> ").lower()[0] == "y":
                         MoreResponses = True
                 
-                AppendToFile("Responses,txt", UserInput, NewResponseList)
-                ResponsesDict = InterpretFileContents("Responses.txt")
+                print("\n")
+                AppendToFile(FileName, UserInput, NewResponseList)
+                ResponsesDict = InterpretFileContents(FileName)
