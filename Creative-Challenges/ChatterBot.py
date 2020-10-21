@@ -8,14 +8,19 @@ def InterpretFileContents(FileName):
     """
 
     OutputDict = {}
+    ExitPhrases = []
     with open(FileName, "r") as ResponseFile:
-        for Line in ResponseFile.readlines():
-            Line.replace("\n", "")
-            KeyString = Line.split(":")[0]
-            ValueList = Line.split(":")[1].split(";")
-            OutputDict[KeyString] = ValueList
+        FileContents = ResponseFile.readlines()
+        for Line in FileContents:
+            if Line != FileContents[0]:
+                Line = Line.replace("\n", "")
+                KeyString = Line.split(":")[0]
+                ValueList = Line.split(":")[1].split(";")
+                OutputDict[KeyString] = ValueList
+            else:
+                ExitPhrases.extend(Line.split(";"))
     
-    return OutputDict
+    return OutputDict, ExitPhrases
 
 def AppendToFile(FileName, InputString, OutputLst):
     with open(FileName, "a") as ResponseFile:
@@ -28,27 +33,46 @@ def AppendToFile(FileName, InputString, OutputLst):
                 TextToWrite += "\n"
         ResponseFile.write(TextToWrite)
 
+def Treat(String):
+    NewString = String.lower().replace("?", "").replace("!", "").replace(",", "").replace(".", "").replace("(", "").replace(")", "").replace("'", "")
+    return NewString
+
 if __name__ == "__main__":
-    ResponseDict = InterpretFileContents("Creative-Challenges/Responses.txt")
+    UserName = input("What's your name?\n>")
+    print("\n")
+    FileName = "Creative-Challenges/Responses.txt"
+    ResponseDict, GoodbyePhrases = InterpretFileContents(FileName)
     ConvEnded = False
-    if ConvEnded == False:
-        UserInput = input("> ").lower()
-        try:
-            PossibleResponses = ResponseDict[UserInput]
-            Output = PossibleResponses[randint(0, len(PossibleResponses) - 1)]
-            print(Output)
-        except KeyError:
-            ## No response found
-            NewResponseList = []
-            MoreResponses = False
-            while len(NewResponseList) == 0 or MoreResponses == True:
+    while ConvEnded == False:
+        UserInput = input("> ")
+        UserInput = Treat(UserInput)
+
+        if UserInput in GoodbyePhrases:
+            ConvEnded = True
+            print("Goodbye")
+        else:
+            Found = False
+            for PossInput in ResponseDict.keys():
+                if UserInput == PossInput or PossInput in UserInput:
+                    PossibleOutputs = ResponseDict[PossInput]
+                    Output = PossibleOutputs[randint(0, len(PossibleOutputs) - 1)]
+                    Output = Output.replace("<name>", UserName)
+                    print(Output, end = "\n\n")
+                    Found = True
+                    break
+            
+            if Found == False:
+                ## No response found
+                NewResponseList = []
                 MoreResponses = False
-                NewResponseList.append(input("How should I answer that?\n> "))
+                while len(NewResponseList) == 0 or MoreResponses == True:
+                    MoreResponses = False
+                    NewResponseList.append(input("How should I answer that?\n> "))
+                    print()
 
-                if input("Are there more responses to that phrase?\n> ").lower()[0] == "y":
-                    MoreResponses = True
-            
-            AppendToFile("Responses,txt", UserInput, NewResponseList)
-            ResponsesDict = InterpretFileContents("Responses.txt")
-
-            
+                    if input("Are there more responses to that phrase?\n> ").lower()[0] == "y":
+                        MoreResponses = True
+                        print()
+                print("\n")
+                AppendToFile(FileName, UserInput, NewResponseList)
+                ResponsesDict = InterpretFileContents(FileName)
