@@ -34,7 +34,7 @@ def AppendToFile(FileName, InputString, OutputLst):
         ResponseFile.write(TextToWrite)
 
 def Treat(String):
-    NewString = String.lower().replace("?", "").replace("!", "").replace(",", "").replace(".", "").replace("(", "").replace(")", "")
+    NewString = String.lower().replace("?", "").replace("!", "").replace(",", "").replace(".", "").replace("(", "").replace(")", "").replace("'", "")
     return NewString
 
 if __name__ == "__main__":
@@ -48,14 +48,15 @@ if __name__ == "__main__":
             ConvEnded = True
             print("Goodbye")
         else:
-            Found = True
+            Found = False
             for PossInput in ResponseDict.keys():
-                if UserInput == PossInput:
-                    Output = ResponseDict[PossInput][randint(0, len(ResponseDict) - 1)]
+                if UserInput == PossInput or PossInput in UserInput:
+                    PossibleOutputs = ResponseDict[PossInput]
+                    Output = PossibleOutputs[randint(0, len(PossibleOutputs) - 1)]
                     print(Output)
-                elif PossInput in UserInput:
-                    Output = ResponseDict[PossInput][randint(0, len(ResponseDict) - 1)]
-                    print(Output)
+                    Found = True
+                    break
+            
             if Found == False:
                 ## No response found
                 NewResponseList = []
