@@ -15,9 +15,9 @@ def draw_lines(coordinates):
     for coords in coordinates:
         start_coor, end_coor = coords[0], coords[1]
         turtle.penup()
-        turtle.goto(0, 0)
-        # go to start coor
+        turtle.goto(start_coor)
         turtle.pendown()
+        turtle.goto(end_coor)
     
 
 def dodge(front,back):
