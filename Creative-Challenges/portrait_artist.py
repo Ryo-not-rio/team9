@@ -12,12 +12,16 @@ def grayscale(rgb):
 # and draws them onto canvas
 def draw_lines(coordinates):
     t = turtle.Turtle()
-    for coords in coordinates:
+    turtle.tracer(0, 0)
+    t.speed("fastest")
+    for i, coords in enumerate(coordinates):
         start_coor, end_coor = coords[0], coords[1]
-        turtle.penup()
-        turtle.goto(start_coor)
-        turtle.pendown()
-        turtle.goto(end_coor)
+        t.penup()
+        t.goto(start_coor)
+        t.pendown()
+        t.goto(end_coor)
+        if i % 100 == 0:
+            turtle.update()
     
 
 def dodge(front,back):
@@ -32,10 +36,14 @@ def image_to_array():
     g=grayscale(s)
     i = 255-g
     b = scipy.ndimage.filters.gaussian_filter(i,sigma=10)
+    r = dodge(b, g)
+    plt.imshow(r, cmap="gray")
+    plt.show()
     r = np.array(dodge(b,g))
     return r
 
-def array_to_lines(array):
+def array_to_lines():
+    array = image_to_array()
     coors = []
     for i, r in enumerate(array):
         for j, c in enumerate(r):
@@ -44,4 +52,5 @@ def array_to_lines(array):
 
     return coors
 
-print(array_to_lines(image_to_array()))
+if __name__ == "__main__":
+    draw_lines(array_to_lines())
