@@ -14,3 +14,4 @@ class Beat:
 
     def draw(self, display):
         py.draw.circle(display, py.Color('blue'), self.pos, int(beat_width/2))
+        py.draw.circle(display, py.Color('gray'), self.pos, int(beat_width/2)+2, 4)
