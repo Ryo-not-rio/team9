@@ -29,8 +29,6 @@ def make_line(num_syllables):
         word += " " + find_word(num_syllables-syllable)
     return word
         
-        
     # returns line with given syllables
 
 if __name__ == "__main__":
-    print(make_line(5))
