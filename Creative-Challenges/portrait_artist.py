@@ -12,9 +12,12 @@ def grayscale(rgb):
 # and draws them onto canvas
 def draw_lines(coordinates):
     t = turtle.Turtle()
-    turtle.penup()
-    turtle.goto(0, 0)
-    turtle.pendown()
+    for coords in coordinates:
+        start_coor, end_coor = coords[0], coords[1]
+        turtle.penup()
+        turtle.goto(0, 0)
+        # go to start coor
+        turtle.pendown()
     
 
 def dodge(front,back):
