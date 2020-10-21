@@ -14,18 +14,23 @@ def draw_lines(coordinates):
     t = turtle.Turtle()
     turtle.tracer(0, 0)
     t.speed("fastest")
+    translate_x, translate_y = -100, 200
     for i, coords in enumerate(coordinates):
         start_coor, end_coor = coords[0], coords[1]
+        start_coor = (start_coor[0] + translate_x, -start_coor[1] + translate_y)
+        end_coor = (end_coor[0] + translate_x, -end_coor[1] + translate_y)
+
         t.penup()
         t.goto(start_coor)
         t.pendown()
         t.goto(end_coor)
         if i % 1000 == 0:
             turtle.update()
+    turtle.mainloop()
     
 
 def dodge(front,back):
-    result=front*255/(255-back) 
+    result=front*255/(255-back + 0.0000000001)
     result[result>255]=255
     result[back==255]=255
     return result.astype('uint8')
@@ -44,7 +49,7 @@ def image_to_array():
     b = scipy.ndimage.filters.gaussian_filter(i,sigma=10)
     r = dodge(b, g)
     plt.imshow(r, cmap="gray")
-    plt.show()
+    #plt.show()
     r = np.array(dodge(b,g))
     return r
 
@@ -53,7 +58,7 @@ def array_to_lines():
     coors = []
     for i, r in enumerate(array):
         for j, c in enumerate(r):
-            if c >= 200:
+            if c <= 240:
                 coors.append(((j-1, i-1), (j+1, i+1)))
 
     return coors
