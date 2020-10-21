@@ -1,6 +1,9 @@
 goodbye;i want to end this conversation;bye;see you later
-hello:Hi there <name>;Hello to you too;Hello there
-how are you:I'm great, how are you;Not too bad, how are you?
+hello:Hi there <name>;Hello to you too;Hello there <name>
+hi:Hi there <name>;Hello to you too;Hello there <name>
+whats up:Not much, how are you?
+how are you:I'm great, how are you <name>;Not too bad, how are you?
 did you see that ludicrous display last night:What was Wenger thinking sending Walcott on that early?
 what was wenger thinking sending walcott on that early:Thing about Arsenal is they alwasy try and walk it in
 thing about arsenal is they always try and walk it in:Yeah that's truei'm good:That's great;Good for you pal& c:/users/rober/appdata/local/programs/python/python39/pythonexe c:/users/rober/someshittyfoldername/team9/creative-challenges/chatterbotpy:& C:/Users/rober/AppData/Local/Programs/Python/Python39/python.exe c:/Users/rober/SomeShittyFolderName/team9/Creative-Challenges/ChatterBot.py
+whats the weather like:Hopefully it's sunny;It's fairly warm today

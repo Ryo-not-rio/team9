@@ -38,12 +38,15 @@ def Treat(String):
     return NewString
 
 if __name__ == "__main__":
+    UserName = input("What's your name?\n>")
+    print("\n")
     FileName = "Creative-Challenges/Responses.txt"
     ResponseDict, GoodbyePhrases = InterpretFileContents(FileName)
     ConvEnded = False
     while ConvEnded == False:
         UserInput = input("> ")
         UserInput = Treat(UserInput)
+
         if UserInput in GoodbyePhrases:
             ConvEnded = True
             print("Goodbye")
@@ -53,7 +56,8 @@ if __name__ == "__main__":
                 if UserInput == PossInput or PossInput in UserInput:
                     PossibleOutputs = ResponseDict[PossInput]
                     Output = PossibleOutputs[randint(0, len(PossibleOutputs) - 1)]
-                    print(Output)
+                    Output = Output.replace("<name>", UserName)
+                    print(Output, end = "\n\n")
                     Found = True
                     break
             
@@ -64,10 +68,11 @@ if __name__ == "__main__":
                 while len(NewResponseList) == 0 or MoreResponses == True:
                     MoreResponses = False
                     NewResponseList.append(input("How should I answer that?\n> "))
+                    print()
 
                     if input("Are there more responses to that phrase?\n> ").lower()[0] == "y":
                         MoreResponses = True
-                
+                        print()
                 print("\n")
                 AppendToFile(FileName, UserInput, NewResponseList)
                 ResponsesDict = InterpretFileContents(FileName)
