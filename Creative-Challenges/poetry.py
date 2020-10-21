@@ -28,8 +28,6 @@ def make_line(num_syllables):
     if num_syllables != syllable:
         word += " " + find_word(num_syllables-syllable)
     return word
-        
-    # returns line with given syllables
 
 if __name__ == "__main__":
     print("{0:^20}\n{1:^20}\n{2:^20}".format(make_line(5), make_line(7), make_line(5)))
