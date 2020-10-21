@@ -11,7 +11,11 @@ def grayscale(rgb):
 # Takes list of [((start_x, start_y), (end_x, end_y)), ((start_x, start_y), (end_x, end_y)), ((start_x, start_y), (end_x, end_y)) ...]
 # and draws them onto canvas
 def draw_lines(coordinates):
-    pass
+    t = turtle.Turtle()
+    turtle.penup()
+    turtle.goto(0, 0)
+    turtle.pendown()
+    
 
 def dodge(front,back):
     result=front*255/(255-back) 
