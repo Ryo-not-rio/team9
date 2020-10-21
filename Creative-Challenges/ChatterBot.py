@@ -31,7 +31,7 @@ def AppendToFile(FileName, InputString, OutputLst):
 if __name__ == "__main__":
     ResponseDict = InterpretFileContents("Creative-Challenges/Responses.txt")
     ConvEnded = False
-    if ConvEnded == False:
+    while ConvEnded == False:
         UserInput = input("> ").lower()
         try:
             PossibleResponses = ResponseDict[UserInput]
