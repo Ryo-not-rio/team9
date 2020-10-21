@@ -7,15 +7,12 @@ import beat
 
 py.init()
 
-img = py.image.load(os.path.join("images", "Final-challenge/Background.png"))
-img = py.transform.scale(img, (settings.BLOCK_SIZE, settings.BLOCK_SIZE))
-img = img.convert()
-display.blit(img, position)
-
 display = py.display.set_mode((800, 800))
 clock = py.time.Clock()
 
-font = py.font.SysFont('arial', 60)
+img = py.image.load("Final-challenge/Background.png")
+img = py.transform.scale(img, (800, 800))
+img = img.convert_alpha()
 
 def make_easier(beats, difficulty=1.0):
     beats = beats[:]
@@ -74,11 +71,11 @@ while not game_exit:
                     if b.collidepoint(pos):
                         beats = make_easier(beats, (i+1)/len(start_buttons))
                         game_state = 1
-                        py.mixer.music.play(-1)
+                        py.mixer.music.play(1)
                         score = 0
                         start_time = time.time()
                         
-
+    
     if game_state == 1:
         while len(beats) > 0 and time.time() - start_time > (beats[0]-shift):
             beat_objs.append(beat.Beat(random.randint(0, 3)))
@@ -92,10 +89,13 @@ while not game_exit:
 
         while None in beat_objs:
             beat_objs.remove(None)
+        
+        if not py.mixer.music.get_busy():
+            game_state = 2
 
 
     ### Drawing ###
-    display.fill(py.Color('white'))
+    display.blit(img, (0, 0))
 
     if game_state == 0:
         font = py.font.SysFont('arial_bold', 80)
@@ -114,6 +114,17 @@ while not game_exit:
             py.draw.circle(display, py.Color('lightblue'), (int(((800 - beat_width*4)/2 + beat_width/2) + i*beat_width), 770), int(beat_width/2))
         for b in beat_objs:
             b.draw(display)
+        # py.mixer.music.stop()
+
+    elif game_state == 2:
+        font = py.font.SysFont('arial_bold', 150)
+        text = font.render("Game Over!", False, py.Color('black'))
+        display.blit(text, (100, 100))
+        font = py.font.SysFont('arial', 100)
+        text = font.render("You Scored: {}".format(score), False, py.Color('black'))
+        display.blit(text, (150, 400))
+
+        
 
     clock.tick(fps)
     py.display.update()
