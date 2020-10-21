@@ -7,6 +7,11 @@ import beat
 
 py.init()
 
+img = py.image.load(os.path.join("images", "Final-challenge/Background.png"))
+img = py.transform.scale(img, (settings.BLOCK_SIZE, settings.BLOCK_SIZE))
+img = img.convert()
+display.blit(img, position)
+
 display = py.display.set_mode((800, 800))
 clock = py.time.Clock()
 
