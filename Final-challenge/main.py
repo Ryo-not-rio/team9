@@ -1,4 +1,5 @@
 import pygame as py
+import time
 
 import beat
 
@@ -11,14 +12,22 @@ game_exit = False
 
 beats = [1.9, 2.01]
 beat_objs = [beat.Beat(0), beat.Beat(1), beat.Beat(2), beat.Beat(3)]
-speed = 5
+speed = 2
 
+score = 0
+start_time = time.time()
 while not game_exit:
     for event in py.event.get():
         if event.type == py.QUIT:
             game_exit = True
         if event.type == py.KEYDOWN:
-            if event.key == py.K_RIGHT:
+            if event.key == py.K_1:
+                pass
+            if event.key == py.K_2:
+                pass
+            if event.key == py.K_3:
+                pass
+            if event.key == py.K_4:
                 pass
 
     for beat in beat_objs:
@@ -31,7 +40,7 @@ while not game_exit:
         beat.draw(display)
     # py.draw.rect(display, py.Color('blue'), (0, 0, 100 ,100))
 
-    clock.tick(50)
+    clock.tick(30)
     py.display.update()
 
 py.quit()
