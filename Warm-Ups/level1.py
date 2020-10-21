@@ -1,10 +1,14 @@
 """ Hackathon - Level 1 """
 
 def min_max_product(list):
-    # Add your solution here. You can use additional functions if need be.
-    # Don't forget to add a DocString for all your functions and comment your code.
-    # Your functions should return values rather than printing the result although you can use printing for testing purposes.
-    return "Your Return Value"
+    Minimum = Lst[0]
+    Maximum = Lst[0]
+    for Item in Lst[1:]:
+        Minimum = min(Minimum, Item)
+        Maximum = max(Minimum, Item)
+
+    Product = Maximum * Minimum
+    return Product
 
 if __name__ == '__main__':
     # Add any code to test your solution here
