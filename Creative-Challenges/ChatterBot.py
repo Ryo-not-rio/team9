@@ -75,4 +75,4 @@ if __name__ == "__main__":
                         print()
                 print("\n")
                 AppendToFile(FileName, UserInput, NewResponseList)
-                ResponsesDict = InterpretFileContents(FileName)
+                ResponseDict, GoodbyePhrases = InterpretFileContents(FileName)
