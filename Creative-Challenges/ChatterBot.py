@@ -70,7 +70,7 @@ if __name__ == "__main__":
                     NewResponseList.append(input("How should I answer that?\n> "))
                     print()
 
-                    if input("Are there more responses to that phrase?\n> ").lower()[0] == "y":
+                    if input("Are there more responses to that phrase?\n> ").lower() in ["y", "yes"]:
                         MoreResponses = True
                         print()
                 print("\n")
