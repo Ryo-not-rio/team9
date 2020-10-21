@@ -14,6 +14,9 @@ display.blit(img, position)
 
 display = py.display.set_mode((800, 800))
 clock = py.time.Clock()
+
+font = py.font.SysFont('arial', 60)
+
 def make_easier(beats, difficulty=1.0):
     beats = beats[:]
     for i in range(int(len(beats) - (len(beats)*difficulty))):
@@ -29,16 +32,20 @@ beats = [5.41656756401062, 6.405829906463623, 7.393883466720581, 8.4818639755249
 beat_objs = []
 
 beat_width = 60
-
-score = 0
-start_time = time.time()
+start_time = float('inf')
+scor = 0
 
 music = py.mixer.music.load(os.path.join("Final-challenge", "sonog.mp3"))
 py.mixer.music.set_volume(0.8)
-py.mixer.music.play(-1)
 
 beats = make_easier(beats, 0.5)
 
+start_buttons = []
+offset = (800 - 150*4)/2
+for i in range(4):
+    start_buttons.append(py.Rect((offset + i*150, 300, 120, 80)))
+
+game_state = 0
 make_keys = []
 while not game_exit:
     keys = []
@@ -47,38 +54,66 @@ while not game_exit:
         if event.type == py.QUIT:
             game_exit = True
         if event.type == py.KEYDOWN:
-            if event.key == py.K_1:
-                keys.append(0)
-            if event.key == py.K_2:
-                keys.append(1)
-            if event.key == py.K_3:
-                keys.append(2)
-            if event.key == py.K_4:
-                keys.append(3)
-            if event.key == py.K_RETURN:
-                make_keys.append(time.time() - start_time)
+            if game_state == 0:
+                pass
+            elif game_state == 1:
+                if event.key == py.K_1:
+                    keys.append(0)
+                if event.key == py.K_2:
+                    keys.append(1)
+                if event.key == py.K_3:
+                    keys.append(2)
+                if event.key == py.K_4:
+                    keys.append(3)
+                if event.key == py.K_RETURN:
+                    make_keys.append(time.time() - start_time)
+        if event.type == py.MOUSEBUTTONUP:
+            pos = py.mouse.get_pos()
+            if game_state == 0:
+                for i, b in enumerate(start_buttons):
+                    if b.collidepoint(pos):
+                        beats = make_easier(beats, (i+1)/len(start_buttons))
+                        game_state = 1
+                        py.mixer.music.play(-1)
+                        score = 0
+                        start_time = time.time()
+                        
 
-    while len(beats) > 0 and time.time() - start_time > (beats[0]-shift):
-        beat_objs.append(beat.Beat(random.randint(0, 3)))
-        del beats[0]
+    if game_state == 1:
+        while len(beats) > 0 and time.time() - start_time > (beats[0]-shift):
+            beat_objs.append(beat.Beat(random.randint(0, 3)))
+            del beats[0]
 
-    for i, b in enumerate(beat_objs):
-        b.pos[1] += speed
-        if b.lane in keys and b.is_success():
-            beat_objs[i] = None
-            score += 1
+        for i, b in enumerate(beat_objs):
+            b.pos[1] += speed
+            if b.lane in keys and b.is_success():
+                beat_objs[i] = None
+                score += 1
 
-    while None in beat_objs:
-        beat_objs.remove(None)
+        while None in beat_objs:
+            beat_objs.remove(None)
 
 
     ### Drawing ###
     display.fill(py.Color('white'))
-    for i in range(4):
-        py.draw.circle(display, py.Color('lightblue'), (int(((800 - beat_width*4)/2 + beat_width/2) + i*beat_width), 770), int(beat_width/2))
-    for b in beat_objs:
-        b.draw(display)
-    # py.draw.rect(display, py.Color('blue'), (0, 0, 100 ,100))
+
+    if game_state == 0:
+        font = py.font.SysFont('arial_bold', 80)
+        text = font.render("Choose difficulty", False, py.Color('black'))
+        display.blit(text, (100, 100))
+
+        font = py.font.SysFont('arial', 30)
+        texts = ["Easy", "Medium", "Difficult", "Impossible"]
+        for i, b in enumerate(start_buttons):
+            py.draw.rect(display, py.Color('black'), b, 2)
+            text = font.render(texts[i], False, py.Color('black'))
+            display.blit(text, (b.x + 2, b.y + 20))
+
+    elif game_state == 1:
+        for i in range(4):
+            py.draw.circle(display, py.Color('lightblue'), (int(((800 - beat_width*4)/2 + beat_width/2) + i*beat_width), 770), int(beat_width/2))
+        for b in beat_objs:
+            b.draw(display)
 
     clock.tick(fps)
     py.display.update()
