@@ -1,6 +1,6 @@
 """ Hackathon - Level 1 """
 
-def min_max_product(list):
+def min_max_product(Lst):
     Minimum = Lst[0]
     Maximum = Lst[0]
     for Item in Lst[1:]:
