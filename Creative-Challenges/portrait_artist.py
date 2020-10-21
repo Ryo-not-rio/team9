@@ -20,7 +20,7 @@ def draw_lines(coordinates):
         t.goto(start_coor)
         t.pendown()
         t.goto(end_coor)
-        if i % 100 == 0:
+        if i % 1000 == 0:
             turtle.update()
     
 
@@ -31,7 +31,13 @@ def dodge(front,back):
     return result.astype('uint8')
 
 def image_to_array():
-    img = "Creative-Challenges\dave.jpg"
+    img = Image.open('Creative-Challenges\dave.jpg')
+    basewidth = 300
+    wpercent = (basewidth / float(img.size[0]))
+    hsize = int((float(img.size[1]) * float(wpercent)))
+    img = img.resize((basewidth, hsize), Image.ANTIALIAS)
+    img.save('Creative-Challenges/resized_image.jpg')
+    img = "Creative-Challenges/resized_image.jpg"
     s = imageio.imread(img)
     g=grayscale(s)
     i = 255-g
