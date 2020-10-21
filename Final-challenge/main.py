@@ -40,7 +40,9 @@ beats = make_easier(beats, 0.5)
 start_buttons = []
 offset = (800 - 150*4)/2
 for i in range(4):
-    start_buttons.append(py.Rect((offset + i*150, 300, 120, 80)))
+    start_buttons.append(py.Rect((int(offset + i*150), 300, 120, 80)))
+
+end_button = py.Rect((100, 300, 120, 80))
 
 game_state = 0
 make_keys = []
@@ -74,6 +76,9 @@ while not game_exit:
                         py.mixer.music.play(1)
                         score = 0
                         start_time = time.time()
+            if game_state == 2:
+                if end_button.collidepoint(pos):
+                    game_state = 0
                         
     
     if game_state == 1:
@@ -95,7 +100,7 @@ while not game_exit:
 
 
     ### Drawing ###
-    display.blit(img, (0, 0))
+    display.fill(py.Color('white'))
 
     if game_state == 0:
         font = py.font.SysFont('arial_bold', 80)
@@ -123,6 +128,11 @@ while not game_exit:
         font = py.font.SysFont('arial', 100)
         text = font.render("You Scored: {}".format(score), False, py.Color('black'))
         display.blit(text, (150, 400))
+
+        font = py.font.SysFont('arial', 30)
+        py.draw.rect(display, py.Color('black'), end_button, 2)
+        text = font.render("Play Again", False, py.Color('black'))
+        display.blit(text, (end_button.x + 2, end_button.y + 20))
 
         
 
