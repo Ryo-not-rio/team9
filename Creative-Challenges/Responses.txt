@@ -1,1 +1,6 @@
-hello:Hi there;Hello to you too;Hello there
+goodbye;i want to end this conversation;bye;see you later
+hello:Hi there <name>;Hello to you too;Hello there
+how are you:I'm great, how are you;Not too bad, how are you?
+did you see that ludicrous display last night:What was Wenger thinking sending Walcott on that early?
+what was wenger thinking sending walcott on that early:Thing about Arsenal is they alwasy try and walk it in
+thing about arsenal is they always try and walk it in:Yeah that's true
