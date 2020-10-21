@@ -1,13 +1,7 @@
 """ Hackathon - Level 1 """
 
 def min_max_product(Lst):
-    Minimum = Lst[0]
-    Maximum = Lst[0]
-    for Item in Lst[1:]:
-        Minimum = min(Minimum, Item)
-        Maximum = max(Minimum, Item)
-
-    Product = Maximum * Minimum
+    Product = min(Lst) * max(Lst)
     return Product
 
 if __name__ == '__main__':
