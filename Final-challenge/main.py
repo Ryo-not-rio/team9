@@ -10,8 +10,8 @@ clock = py.time.Clock()
 game_exit = False
 
 beats = [1.9, 2.01]
-beat_objs = [beat.Beat(1)]
-speed = 10
+beat_objs = [beat.Beat(0), beat.Beat(1), beat.Beat(2), beat.Beat(3)]
+speed = 5
 
 while not game_exit:
     for event in py.event.get():
